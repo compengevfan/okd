@@ -1,0 +1,71 @@
+# ---
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: mongodb-sa
+#   namespace: databases
+# #automountServiceAccountToken: false
+
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: mongodb-databases-rolebinding
+#   namespace: databases
+# subjects:
+# - kind: ServiceAccount
+#   name: mongodb-sa
+#   namespace: databases
+# roleRef:
+#   kind: ClusterRole
+#   name: system:openshift:scc:anyuid
+#   apiGroup: rbac.authorization.k8s.io
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb  # Sets Deployment name
+  namespace: databases
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      namespace: databases
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:6.0 # Sets Image
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 27017  # Exposes container port
+          env:
+          - name: MONGO_INITDB_DATABASE
+            value: mongodbdatabase
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom: 
+              secretKeyRef:
+                name: mongodb-k8s-root-password
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: mongodb-k8s-root-password
+                key: password
+          resources:
+            limits:
+              cpu: 250m
+              memory: 750Mi
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodbdb
+      volumes:
+        - name: mongodbdb
+          persistentVolumeClaim:
+            claimName: mongodb-pv-claim

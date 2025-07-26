@@ -1,0 +1,6 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: evorigin-ca
+spec:
+  itemPath: "vaults/HomeLab/items/evorigin-ca"

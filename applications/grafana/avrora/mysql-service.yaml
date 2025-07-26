@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql # Sets service name
+  namespace: grafana
+  labels:
+    app: mysql # Labels and Selectors
+spec:
+  type: NodePort # Sets service type
+  ports:
+    - port: 3306 # Sets port to run the mysql application
+  selector:
+    app: mysql

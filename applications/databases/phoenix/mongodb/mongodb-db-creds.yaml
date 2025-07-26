@@ -1,0 +1,8 @@
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: mongodb-k8s-root-password
+  namespace: databases
+spec:
+  itemPath: "vaults/HomeLab/items/mongodb-k8s-root-password"

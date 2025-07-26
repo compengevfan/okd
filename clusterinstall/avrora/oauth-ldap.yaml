@@ -1,0 +1,50 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: bind-ldap-password
+  namespace: openshift-config
+spec:
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  data:
+  - secretKey: bindPassword
+    remoteRef: 
+      key: ldap
+      property: ldap-password
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ldap-secret
+#   namespace: openshift-config
+# type: Opaque
+# data:
+#   bindPassword: <base64_encoded_bind_password>
+---
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+  namespace: openshift-config
+spec:
+  identityProviders:
+  - name: evorigin 
+    mappingMethod: claim 
+    type: LDAP
+    ldap:
+      attributes:
+        id: 
+        - dn
+        email: 
+        - UserPrincipalName
+        name: 
+        - name
+        preferredUsername: 
+        - UserPrincipalName
+      bindDN: "svcLDAP"
+      bindPassword: 
+        name: bind-ldap-password
+      insecure: true 
+      url: "ldap://evorigin.com:389/dc=evorigin,dc=com?UserPrincipalName"

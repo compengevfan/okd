@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: storage2-nvme-vcp-immediate
+provisioner: kubernetes.io/vsphere-volume
+parameters:
+  datastore: iSCSI-Storage2-NVMe
+reclaimPolicy: Delete
+volumeBindingMode: Immediate

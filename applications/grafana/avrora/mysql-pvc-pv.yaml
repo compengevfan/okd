@@ -1,0 +1,16 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysql-pv-claim  # Sets name of PVC
+  namespace: grafana
+  labels:
+    app: mysql
+spec:
+  storageClassName: storage1-nvme-vcp-immediate
+  accessModes:
+    - ReadWriteOnce  # Sets read and write access
+  resources:
+    requests:
+      storage: 10Gi  # Sets volume size
+  volumeMode: Filesystem

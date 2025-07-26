@@ -1,0 +1,15 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: mysql-k8s-root-password
+  namespace: grafana
+spec:
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  data:
+  - secretKey: password
+    remoteRef:
+      key: k8s/mysql/root
+      property: password

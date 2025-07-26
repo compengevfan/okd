@@ -1,0 +1,57 @@
+#additionalTrustBundlePolicy: Proxyonly
+apiVersion: v1
+baseDomain: evorigin.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: avrora
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  vsphere:
+    apiVIPs:
+    - 192.168.1.15
+    disktype: thin
+    failureDomains:
+    - name: generated-failure-domain
+      region: generated-region
+      server: [vcenterserver]
+      topology:
+        computeCluster: /DC1/host/C1
+        datacenter: DC1
+        datastore: /DC1/datastore/iSCSI-Storage1-NVMe
+        networks:
+        - JAX-EvOrigin-vDS
+        resourcePool: /DC1/host/C1//Resources
+      zone: generated-zone
+    ingressVIPs:
+    - 192.168.1.16
+    vcenters:
+    - datacenters:
+      - DC1
+      password: [vcenterpassword]
+      port: 443
+      server: [vcenterserver]
+      user: [vcenteruser]
+publish: External
+pullSecret: [pullsecret]
+sshKey: |
+  [sshkey]
