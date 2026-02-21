@@ -1,0 +1,107 @@
+additionalTrustBundlePolicy: Proxyonly
+apiVersion: v1
+baseDomain: okd.evorigin.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  name: avrora
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  baremetal:
+    apiVIPs:
+    - 10.0.0.10
+    bootstrapProvisioningIP: 172.22.0.2
+    clusterProvisioningIP: 172.22.0.3
+    dnsRecordsType: Internal
+    externalBridge: baremetal
+    externalMACAddress: 52:54:00:56:5e:d1
+    hosts:
+    - bmc:
+        address: ipmi://192.168.0.1
+        disableCertificateVerification: false
+        password: blah
+        username: blah
+      bootMACAddress: "02:00:00:00:00:01"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-cp1
+      role: master
+    - bmc:
+        address: ipmi://192.168.0.2
+        disableCertificateVerification: false
+        password: blah
+        username: blah
+      bootMACAddress: "02:00:00:00:00:02"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-cp2
+      role: master
+    - bmc:
+        address: ipmi://192.168.0.3
+        disableCertificateVerification: false
+        password: blah
+        username: blah
+      bootMACAddress: "02:00:00:00:00:03"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-cp3
+      role: master
+    - bmc:
+        address: ipmi://192.168.0.4
+        disableCertificateVerification: false
+        password: blah
+        username: "02:00:00:00:00:04"
+      bootMACAddress: "02:00:00:00:00:04"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-wk1
+      role: worker
+    - bmc:
+        address: ipmi://192.168.0.5
+        disableCertificateVerification: false
+        password: blah
+        username: blah
+      bootMACAddress: "02:00:00:00:00:05"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-wk2
+      role: worker
+    - bmc:
+        address: ipmi://192.168.0.6
+        disableCertificateVerification: false
+        password: blah
+        username: blah
+      bootMACAddress: "02:00:00:00:00:06"
+      bootMode: UEFI
+      hardwareProfile: default
+      name: okd-avrora-wk3
+      role: worker
+    ingressVIPs:
+    - 10.0.0.11
+    libvirtURI: qemu:///system
+    provisioningBridge: provisioning
+    provisioningDHCPRange: 172.22.0.10,172.22.0.254
+    provisioningMACAddress: 52:54:00:3a:7f:f4
+    provisioningNetwork: Managed
+    provisioningNetworkCIDR: 172.22.0.0/24
+    provisioningNetworkInterface: ""
+publish: External
+pullSecret: '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfMTgzMTg0YTMyY2VhNDEzOTg3ZmFmNzVkNTQ3YzJmNTU6NExTNjZVMVNJQldQWE82MkJXUEJDSFA0V1E4TjgwTU9SNjhSSjhNSEw5WUhGVlZQMVc1UlZYNDNRVFdUS1IwVA==","email":"jacky_bryant_2002@hotmail.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfMTgzMTg0YTMyY2VhNDEzOTg3ZmFmNzVkNTQ3YzJmNTU6NExTNjZVMVNJQldQWE82MkJXUEJDSFA0V1E4TjgwTU9SNjhSSjhNSEw5WUhGVlZQMVc1UlZYNDNRVFdUS1IwVA==","email":"jacky_bryant_2002@hotmail.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLThiYWM0YzVmLTJkZWQtNDYyNi1hYjEyLTFiZWMxZjRiNzBmODpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSXdORGs1TkRNeE1qWmpZalEwWVdNek9UQTNNekkxWXpjek5XSTJNVGsyTlNKOS5taXV4RDhYaWNiRmlnLTFHaFBYc2FBUGtjOWFseEUzTXdTWGozS1YtM3paZ2pjREpyVTR5dzJXa2J4ak1iZFI0Nm1HbDdNd0JBdGEyMVV1TXVIVHhPWE1Ha3YxRzlYcWNSaG8zNENSdUtmcGRuN2tiQTlYSnFBdldHWW1OTGtDY0I0b2IwSWdRc0tfWERxRXBnUjNjNWZ0SWU4bDA5cWdrSENhMXBOYUtWOVphOWpFRTZMSDlZVDZTRFo0eHQ3QUVJMkU4RkdPU1o4VkxLRWw1TG5nYi1OZHJNQm5ZcnRyNHl4b3l1d2dZQ2J1Q1lxOHZKREwtdFhGUkZ4cjhQNnJuT0VKV1VDWnNZQ0xhWnp3ek1ZS3N1OVM0Qmo0ZkxoMzBGY3lGQU5EWW9VMURMcFpvWXQ1R2JXTUl3LXJEOGdNcXB1UmZ3cndBajVwcVZWdlZkazVJUjAxLTRyYXVqeUhwWnViTEhiS3psQUtldHF2V1l6aHBwOVpUUUxrT2J2R0FKZ1ZncXR4cTUwYTZadkRZNVZ0bU9oM0tXTFJvakJVb2dhVTJjbHBZVVowZHZRNjUtSERHQWFLczh2MDJuTFU2aDh4ZXVvQ0hNQm5DMmhnbTdCWDIwY3FjRW1xMXpFbWFSd0JOZmdLa1FtSzFqWGFPMGdzXzJWZmdQUHg0UE1NSmJvWDFYMlltMnljNGVudy00Y2NkNVo5VnZzdkJ5QWRCRWo2YWVFTTlhRjZ4ZW5CcllGLXhLVUdPMDBKeVVWelVvTUZLMXE0dWI0SERyVlE0THIxNHZQSkNuZEcxZG5GejcyUWdUbmRSR2tRQzRhQ3ZEOUV1Sm1peW1lV0RlLUhaMlRlTHJpa21pOWVwZ0lXS1hRMndwQXR4OUlvS3ViRERYcjhETy1tbVJCOA==","email":"jacky_bryant_2002@hotmail.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLThiYWM0YzVmLTJkZWQtNDYyNi1hYjEyLTFiZWMxZjRiNzBmODpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSXdORGs1TkRNeE1qWmpZalEwWVdNek9UQTNNekkxWXpjek5XSTJNVGsyTlNKOS5taXV4RDhYaWNiRmlnLTFHaFBYc2FBUGtjOWFseEUzTXdTWGozS1YtM3paZ2pjREpyVTR5dzJXa2J4ak1iZFI0Nm1HbDdNd0JBdGEyMVV1TXVIVHhPWE1Ha3YxRzlYcWNSaG8zNENSdUtmcGRuN2tiQTlYSnFBdldHWW1OTGtDY0I0b2IwSWdRc0tfWERxRXBnUjNjNWZ0SWU4bDA5cWdrSENhMXBOYUtWOVphOWpFRTZMSDlZVDZTRFo0eHQ3QUVJMkU4RkdPU1o4VkxLRWw1TG5nYi1OZHJNQm5ZcnRyNHl4b3l1d2dZQ2J1Q1lxOHZKREwtdFhGUkZ4cjhQNnJuT0VKV1VDWnNZQ0xhWnp3ek1ZS3N1OVM0Qmo0ZkxoMzBGY3lGQU5EWW9VMURMcFpvWXQ1R2JXTUl3LXJEOGdNcXB1UmZ3cndBajVwcVZWdlZkazVJUjAxLTRyYXVqeUhwWnViTEhiS3psQUtldHF2V1l6aHBwOVpUUUxrT2J2R0FKZ1ZncXR4cTUwYTZadkRZNVZ0bU9oM0tXTFJvakJVb2dhVTJjbHBZVVowZHZRNjUtSERHQWFLczh2MDJuTFU2aDh4ZXVvQ0hNQm5DMmhnbTdCWDIwY3FjRW1xMXpFbWFSd0JOZmdLa1FtSzFqWGFPMGdzXzJWZmdQUHg0UE1NSmJvWDFYMlltMnljNGVudy00Y2NkNVo5VnZzdkJ5QWRCRWo2YWVFTTlhRjZ4ZW5CcllGLXhLVUdPMDBKeVVWelVvTUZLMXE0dWI0SERyVlE0THIxNHZQSkNuZEcxZG5GejcyUWdUbmRSR2tRQzRhQ3ZEOUV1Sm1peW1lV0RlLUhaMlRlTHJpa21pOWVwZ0lXS1hRMndwQXR4OUlvS3ViRERYcjhETy1tbVJCOA==","email":"jacky_bryant_2002@hotmail.com"}}}'
