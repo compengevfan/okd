@@ -1,32 +1,24 @@
-additionalTrustBundlePolicy: Proxyonly
 apiVersion: v1
 baseDomain: okd.evorigin.com
-compute:
-- architecture: amd64
-  hyperthreading: Enabled
-  name: worker
-  platform: {}
-  replicas: 2
-controlPlane:
-  architecture: amd64
-  hyperthreading: Enabled
-  name: master
-  platform: {}
-  replicas: 1
 metadata:
   name: avrora
+compute:
+  - name: worker
+    replicas: 0        # Workers are approved manually via CSR in UPI
+controlPlane:
+  name: master
+  replicas: 1
 networking:
-  clusterNetwork:
-  - cidr: 10.128.0.0/14
-    hostPrefix: 23
-  machineNetwork:
-  - cidr: 192.168.0.0/23
   networkType: OVNKubernetes
+  clusterNetwork:
+    - cidr: 10.128.0.0/14
+      hostPrefix: 23
+  machineNetwork:
+    - cidr: 192.168.10.0/24   # ← Set to YOUR Proxmox VM subnet
   serviceNetwork:
-  - 172.30.0.0/16
+    - 172.30.0.0/16
 platform:
-  none: {}
-publish: External
-pullSecret: [pullsecret]
+  none: {}             # UPI bare-metal/VM mode
+pullSecret: '<PASTE_YOUR_PULL_SECRET_JSON_HERE>'
 sshKey: |
-  [sshkey]
+  ssh-rsa AAAA...your_public_ssh_key_here
