@@ -4,7 +4,7 @@ metadata:
   name: avrora
 compute:
   - name: worker
-    replicas: 0        # Workers are approved manually via CSR in UPI
+    replicas: 2        # Workers are approved manually via CSR in UPI
 controlPlane:
   name: master
   replicas: 1
@@ -14,7 +14,7 @@ networking:
     - cidr: 10.128.0.0/14
       hostPrefix: 23
   machineNetwork:
-    - cidr: 192.168.10.0/24   # ← Set to YOUR Proxmox VM subnet
+    - cidr: 192.168.0.0/23   # ← Set to YOUR Proxmox VM subnet
   serviceNetwork:
     - 172.30.0.0/16
 platform:
